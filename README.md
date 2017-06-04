@@ -7,13 +7,6 @@ Install force-require.js from npm.
 npm install force-requirejs -g
 ```
 
-Excute program use `frjs`.
-```sh
-cd /to/folder/path
-frjs . run main.js
-```
-
-
 # Take Example
 In old case, you usually use this way to require some module:
 ```js
@@ -25,26 +18,39 @@ const someModule = require('someModule');
 
 If you use Force-Require.js:
 ```js
-// frjs . run main.js
-const someModule = require('someModule');
+const frequire = require('force-require');
 
-const someModule2 = require('https://github.com/hpcslag/microdatabase'); //here you can require the module from github.
-const someModule3 = require('https://TANETIPADDRESSTEST.com/hpcslag/microdatabase'); //here you can require the module from web.
+frequire.version('~'); //install module with this version or up then this version.
+
+const someModule = frequire('npm://hpcslag@microdatabase').savedev().use('~1.1.3');// --save-dev and return module.
+
+
+const someModule2 = require('https://github.com/hpcslag/microdatabase').nostorage(); //here you can require the module from github. *nostorage() will cleanup this module every time when you start.
+const someModule3 = require('https://TANETIPADDRESSTEST.com/hpcslag/microdatabase').; //here you can require the module from web.
 const someModule3 = require('https://TANETIPADDRESSTEST.com/hpcslag/microdatabase.zip'); //here you can require the .zip module from web.
+
+const someModule3 = require('https://www.npmjs.com/package/chalk').cmd(['--save-dev','--xxx']).use('^3.4.5'); //use module from npm
 ```
 
-# Usage
-#### Auto Install Modules
-```sh
-frjs [directory] [-g | run] [filePath]
+If your repo need to use auth, also can do it:
+Add file: `.authdata`
+```json
+{
+    "moduleName or input url string":{
+        "authType":"basic auth",
+        //use
+        "auth":"auth", 
+        //or
+        "username":"xxxx",
+        "password":"xxxxxx"
+    }
+}
 ```
- - `directory`: Folder path (`./to/path`)
- - `-g` : Install to global
- - `run` : After install and run
- - `filePath`: If you use the `run` command, Then `filePath` need to fill main `.js` you want to run.
- 
- Example:
- ```sh
- frjs ./ run
- ```
- Then `frjs` will make sure all of module is installed and also run the project.
+
+# API
+
+# Support Repo
+ - Github
+ - npmjs
+ - Personal url
+ - zip file
